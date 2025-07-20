@@ -1,32 +1,48 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import Withdraw from './pages/Withdraw';
-import Deposit from './pages/Deposit';
-import ChangeAccountInfo from './pages/ChangeAccountInfo';
-import RenewAccount from './pages/RenewAccount';
+import Login from './components/Login';
+import Home from './components/Home';
+import UserDetail from './components/UserDetail';
+import QrUpdate from './components/QrUpdate';
+import RentalPlanManagement from './components/RentalPlanManagement';
 
 function App() {
-    return (
-        <AuthProvider>
-            <BrowserRouter>
-                <Navigation />
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/withdraw" element={<Withdraw />} />
-                    <Route path="/deposit" element={<Deposit />} />
-                    <Route path="/change-account-info" element={<ChangeAccountInfo />} />
-                    <Route path="/renew-account" element={<RenewAccount />} />
-                    <Route path="/" element={<Navigate to="/login" />} />
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
-    );
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('isAuthenticated') === 'true'
+  );
+
+  return (
+    <Router>
+      <Navigation setIsAuthenticated={setIsAuthenticated} />
+      <div className="container mx-auto p-4">
+        <Routes>
+          <Route
+            path="/login"
+            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          />
+          <Route
+            path="/home"
+            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/user/:account_number"
+            element={isAuthenticated ? <UserDetail /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/qr-update"
+            element={isAuthenticated ? <QrUpdate /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/rental-plan-management"
+            element={isAuthenticated ? <RentalPlanManagement /> : <Navigate to="/login" />}
+          />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
