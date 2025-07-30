@@ -1,4 +1,3 @@
-
 const API_BASE_URL = 'http://51.79.181.161:5000';
 
 const API_ENDPOINTS = {
@@ -16,7 +15,7 @@ const API_ENDPOINTS = {
   qrCodes: '/qr-codes',
   updateQrCode: '/qr-codes',
   payment: '/payment',
-  activateAccount: '/activate-account/:account_number',
+  activateAccount: '/activate-account', // Remove :account_number
 };
 
 export { API_BASE_URL, API_ENDPOINTS };

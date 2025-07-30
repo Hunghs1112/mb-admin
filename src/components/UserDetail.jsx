@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -63,7 +62,8 @@ function UserDetail() {
     // Validate expiration date if status is "Đã kích hoạt"
     if (formData.status === 'Đã kích hoạt') {
       const newExpDate = new Date(formData.new_expiration_date);
-      if (!formData.new_expiration_date || newExpDate <= new Date()) {
+      const today = new Date();
+      if (!formData.new_expiration_date || newExpDate <= today) {
         alert('Ngày hết hạn phải là ngày trong tương lai!');
         setIsSubmitting(false);
         return;
@@ -79,18 +79,25 @@ function UserDetail() {
 
       // Update lock status and expiration date
       if (formData.status === 'Đã kích hoạt') {
-        const activationDate = new Date().toISOString().split('T')[0];
-        await axios.post(`${API_BASE_URL}${API_ENDPOINTS.lockStatus}/${account_number}`, {
-          locked: false,
-          activation_date: activationDate,
-          expiration_date: formData.new_expiration_date,
+        // Calculate expiration_days
+        const today = new Date();
+        const expirationDate = new Date(formData.new_expiration_date);
+        const timeDiff = expirationDate - today;
+        const expirationDays = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert ms to days
+
+        if (expirationDays <= 0) {
+          alert('Ngày hết hạn phải là ngày trong tương lai!');
+          setIsSubmitting(false);
+          return;
+        }
+
+        await axios.post(`${API_BASE_URL}${API_ENDPOINTS.activateAccount}/${account_number}`, {
+          expiration_days: expirationDays,
         });
       } else {
         // Lock the account
-        await axios.post(`${API_BASE_URL}${API_ENDPOINTS.lockStatus}/${account_number}`, {
-          locked: true,
-          activation_date: null,
-          expiration_date: null,
+        await axios.post(`${API_BASE_URL}${API_ENDPOINTS.activateAccount}/${account_number}`, {
+          expiration_days: 0,
         });
       }
 
