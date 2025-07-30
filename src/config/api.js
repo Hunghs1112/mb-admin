@@ -1,9 +1,9 @@
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'http://51.79.181.161:5000';
 
 const API_ENDPOINTS = {
   users: '/users',
-  userDetail: '/user/:account_number',
+  userDetail: '/user',
   lockStatus: '/lock-status/:account_number',
   account: '/account',
   deleteUser: '/users/:account_number',
