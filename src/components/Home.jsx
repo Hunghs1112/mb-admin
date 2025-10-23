@@ -36,7 +36,8 @@ function Home() {
               <th className="py-2 px-4 text-left">Tên</th>
               <th className="py-2 px-4 text-left">Tài khoản</th>
               <th className="py-2 px-4 text-left">Số tài khoản</th>
-              <th className="py-2 px-4 text-left">Trạng thái</th>
+              <th className="py-2 px-4 text-left">Trạng thái khóa</th>
+              <th className="py-2 px-4 text-left">Trạng thái giới hạn</th>
               <th className="py-2 px-4 text-left">Ngày kích hoạt</th>
               <th className="py-2 px-4 text-left">Ngày hết hạn</th>
               <th className="py-2 px-4 text-left">Hành động</th>
@@ -49,6 +50,15 @@ function Home() {
                 <td className="py-2 px-4">{user.username || 'Chưa có tài khoản'}</td>
                 <td className="py-2 px-4">{user.account_number || 'Chưa có số tài khoản'}</td>
                 <td className="py-2 px-4">{user.locked ? 'Khóa' : 'Mở'}</td>
+                <td className="py-2 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    user.limited 
+                      ? 'bg-red-100 text-red-700' 
+                      : 'bg-green-100 text-green-700'
+                  }`}>
+                    {user.limited ? '🔒 Giới hạn' : '✅ Bình thường'}
+                  </span>
+                </td>
                 <td className="py-2 px-4">{user.activation_date ? new Date(user.activation_date).toLocaleDateString() : 'Chưa kích hoạt'}</td>
                 <td className="py-2 px-4">{user.expiration_date ? new Date(user.expiration_date).toLocaleDateString() : 'Chưa có'}</td>
                 <td className="py-2 px-4">

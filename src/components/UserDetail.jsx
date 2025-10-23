@@ -16,6 +16,7 @@ function UserDetail() {
   });
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTogglingLimited, setIsTogglingLimited] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -127,6 +128,37 @@ function UserDetail() {
     }
   };
 
+  const handleToggleLimited = async () => {
+    if (isTogglingLimited) return;
+    
+    const newLimitedStatus = user.limited ? 0 : 1;
+    const action = newLimitedStatus ? 'bật giới hạn' : 'bỏ giới hạn';
+    
+    if (!window.confirm(`Bạn có chắc chắn muốn ${action} cho tài khoản này?`)) {
+      return;
+    }
+
+    setIsTogglingLimited(true);
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/users/${account_number}/limited`,
+        { limited: newLimitedStatus }
+      );
+
+      if (response.data.success) {
+        alert(response.data.message);
+        fetchUser(); // Reload user data to update UI
+      } else {
+        alert('Lỗi: ' + response.data.message);
+      }
+    } catch (error) {
+      console.error('Lỗi cập nhật trạng thái giới hạn:', error);
+      alert(error.response?.data?.message || 'Không thể cập nhật trạng thái giới hạn!');
+    } finally {
+      setIsTogglingLimited(false);
+    }
+  };
+
   if (loading) return (
     <div className="text-center">
       <p className="text-gray-500">Đang tải...</p>
@@ -203,6 +235,37 @@ function UserDetail() {
                 disabled={formData.status === 'Đã khóa'}
               />
             </div>
+
+            {/* Limited Status Section */}
+            <div className="border-t pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-medium text-gray-700">Trạng thái giới hạn:</label>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  user.limited 
+                    ? 'bg-red-100 text-red-700' 
+                    : 'bg-green-100 text-green-700'
+                }`}>
+                  {user.limited ? '🔒 Bị giới hạn' : '✅ Bình thường'}
+                </span>
+              </div>
+              <button
+                onClick={handleToggleLimited}
+                disabled={isTogglingLimited}
+                className={`w-full px-4 py-2 rounded font-medium transition-all ${
+                  user.limited
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white'
+                    : 'bg-gradient-to-r from-pink-400 to-red-500 hover:from-pink-500 hover:to-red-600 text-white'
+                } disabled:opacity-60 disabled:cursor-not-allowed`}
+              >
+                {isTogglingLimited 
+                  ? '⏳ Đang xử lý...' 
+                  : user.limited 
+                    ? '🔓 Bỏ giới hạn tài khoản' 
+                    : '🔒 Giới hạn tài khoản'
+                }
+              </button>
+            </div>
+
             <div className="flex space-x-2">
               <button
                 onClick={handleUpdate}

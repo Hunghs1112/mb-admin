@@ -16,6 +16,7 @@ const API_ENDPOINTS = {
   updateQrCode: '/qr-codes',
   payment: '/payment',
   activateAccount: '/activate-account', // Remove :account_number
+  limitedStatus: '/users/:account_number/limited',
 };
 
 export { API_BASE_URL, API_ENDPOINTS };
