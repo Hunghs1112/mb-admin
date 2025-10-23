@@ -48,42 +48,67 @@ function QrUpdate() {
     }
   };
 
-  if (loading) return <p className="text-center">Đang tải...</p>;
-  if (error) return <p className="text-red-500 text-center">{error}</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <p className="text-slate-600">Đang tải...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <p className="text-red-600">{error}</p>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Cập nhật Thông tin QR</h2>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md max-w-md mx-auto">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Mã Ngân hàng</label>
-          <input
-            type="text"
-            name="bank_code"
-            value={qrInfo.bank_code}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border rounded"
-            required
-          />
+    <div className="min-h-screen bg-slate-50 p-6">
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-slate-900">Cập nhật Thông tin QR</h1>
+          <p className="text-sm text-slate-600 mt-1">Quản lý thông tin mã QR thanh toán</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Số Tài khoản</label>
-          <input
-            type="text"
-            name="account_number"
-            value={qrInfo.account_number}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Cập nhật
-        </button>
-      </form>
+
+        <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-lg shadow-sm p-6">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                Mã Ngân hàng
+              </label>
+              <input
+                type="text"
+                name="bank_code"
+                value={qrInfo.bank_code}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                placeholder="VD: VCB, TCB, MB"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                Số Tài khoản
+              </label>
+              <input
+                type="text"
+                name="account_number"
+                value={qrInfo.account_number}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                placeholder="Nhập số tài khoản"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-md font-medium transition-colors"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

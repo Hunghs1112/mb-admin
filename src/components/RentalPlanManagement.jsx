@@ -94,126 +94,154 @@ function RentalPlanManagement() {
     }
   };
 
-  if (loading) return <p className="text-center">Đang tải...</p>;
-  if (error) return <p className="text-red-500 text-center">{error}</p>;
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <p className="text-slate-600">Đang tải...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <p className="text-red-600">{error}</p>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Quản lý Gói Gia Hạn</h2>
-      
-      {/* Add New Plan Form */}
-      <form onSubmit={handleAddPlan} className="bg-white p-6 rounded shadow-md mb-6 max-w-md">
-        <h3 className="text-lg font-semibold mb-2">Thêm Gói Mới</h3>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Số ngày</label>
-          <input
-            type="number"
-            name="duration"
-            value={newPlan.duration}
-            onChange={handleAddChange}
-            className="mt-1 block w-full p-2 border rounded"
-            required
-            min="1"
-          />
+    <div className="min-h-screen bg-slate-50 p-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-slate-900">Quản lý Gói Gia Hạn</h1>
+          <p className="text-sm text-slate-600 mt-1">Tạo và quản lý các gói gia hạn dịch vụ</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Giá</label>
-          <input
-            type="number"
-            name="price"
-            value={newPlan.price}
-            onChange={handleAddChange}
-            className="mt-1 block w-full p-2 border rounded"
-            required
-            min="0"
-            step="0.01"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Thêm
-        </button>
-      </form>
 
-      {/* Plan List */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="py-2 px-4 text-left">Số ngày</th>
-              <th className="py-2 px-4 text-left">Giá</th>
-              <th className="py-2 px-4 text-left">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {plans.map((plan) => (
-              <tr key={plan.id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4">{plan.duration}</td>
-                <td className="py-2 px-4">{plan.price} VND</td>
-                <td className="py-2 px-4">
-                  <button
-                    onClick={() => setEditPlan({ ...plan })}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
-                  >
-                    Sửa
-                  </button>
-                  <button
-                    onClick={() => handleDeletePlan(plan.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                  >
-                    Xóa
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {plans.length === 0 && <p className="text-center text-gray-500 mt-4">Không có gói gia hạn nào.</p>}
-      </div>
-
-      {/* Edit Plan Form */}
-      {editPlan && (
-        <form onSubmit={handleEditPlan} className="bg-white p-6 rounded shadow-md mt-6 max-w-md">
-          <h3 className="text-lg font-semibold mb-2">Sửa Gói</h3>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Số ngày</label>
-            <input
-              type="text"
-              value={editPlan.duration}
-              disabled
-              className="mt-1 block w-full p-2 border rounded bg-gray-100"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Giá</label>
-            <input
-              type="number"
-              name="price"
-              value={editPlan.price}
-              onChange={handleEditChange}
-              className="mt-1 block w-full p-2 border rounded"
-              required
-              min="0"
-              step="0.01"
-            />
+        {/* Add New Plan Form */}
+        <form onSubmit={handleAddPlan} className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">Thêm Gói Mới</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Số ngày</label>
+              <input
+                type="number"
+                name="duration"
+                value={newPlan.duration}
+                onChange={handleAddChange}
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                placeholder="VD: 30"
+                required
+                min="1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Giá (VNĐ)</label>
+              <input
+                type="number"
+                name="price"
+                value={newPlan.price}
+                onChange={handleAddChange}
+                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                placeholder="VD: 100000"
+                required
+                min="0"
+                step="0.01"
+              />
+            </div>
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors"
           >
-            Lưu
-          </button>
-          <button
-            type="button"
-            onClick={() => setEditPlan(null)}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Hủy
+            Thêm gói
           </button>
         </form>
-      )}
+
+        {/* Plan List */}
+        <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+          <table className="min-w-full divide-y divide-slate-200">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Số ngày</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Giá</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-slate-100">
+              {plans.map((plan) => (
+                <tr key={plan.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-4 py-3 text-sm text-slate-900">{plan.duration} ngày</td>
+                  <td className="px-4 py-3 text-sm text-slate-900">{plan.price.toLocaleString('vi-VN')} VNĐ</td>
+                  <td className="px-4 py-3 text-sm">
+                    <button
+                      onClick={() => setEditPlan({ ...plan })}
+                      className="text-blue-600 hover:text-blue-700 font-medium mr-4"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      onClick={() => handleDeletePlan(plan.id)}
+                      className="text-red-600 hover:text-red-700 font-medium"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {plans.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-slate-500">Không có gói gia hạn nào.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Edit Plan Form */}
+        {editPlan && (
+          <div className="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <form onSubmit={handleEditPlan} className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Sửa Gói</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Số ngày</label>
+                  <input
+                    type="text"
+                    value={editPlan.duration}
+                    disabled
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md bg-slate-50 text-slate-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Giá (VNĐ)</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={editPlan.price}
+                    onChange={handleEditChange}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900"
+                    required
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+              <div className="flex space-x-3 mt-6">
+                <button
+                  type="submit"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-md font-medium transition-colors"
+                >
+                  Lưu
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditPlan(null)}
+                  className="flex-1 bg-slate-500 hover:bg-slate-600 text-white py-2.5 rounded-md font-medium transition-colors"
+                >
+                  Hủy
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
