@@ -6,6 +6,7 @@ const API_ENDPOINTS = {
   lockStatus: '/lock-status/:account_number',
   account: '/account',
   deleteUser: '/users/:account_number',
+  deleteUserHard: '/users/:account_number/hard',
   login: '/login',
   rentalPlans: '/rental-plans',
   rentalPlanDetail: '/rental-plans/:id',

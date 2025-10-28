@@ -111,7 +111,9 @@ function UserDetail() {
     if (window.confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) {
       setIsSubmitting(true);
       try {
-        await axios.delete(`${API_BASE_URL}${API_ENDPOINTS.deleteUser.replace(':account_number', account_number)}`);
+        await axios.delete(
+          `${API_BASE_URL}${API_ENDPOINTS.deleteUserHard.replace(':account_number', account_number)}`
+        );
         alert('Tài khoản đã được xóa!');
         navigate('/home');
       } catch (error) {
